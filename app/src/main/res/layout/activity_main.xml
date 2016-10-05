@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="linuxgg.com.timealarm2.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Voice Alarm"/>
+
+    <ProgressBar
+        android:id="@+id/timer_progress"
+        style="@style/testProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="#ffff00ff"
+        android:padding="15dp"
+        android:progress="20"
+        android:progressBackgroundTint="#ff00ffff"
+        android:progressTint="@android:color/holo_blue_dark"
+        android:secondaryProgress="60"
+        android:secondaryProgressTint="#ffffd300"
+        android:visibility="gone"
+        />
+
+    <linuxgg.com.timealarm2.views.RoundProgressBar
+        android:id="@+id/roundProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:layout_centerInParent="true"
+        android_custom:roundColor="#C6E2FF"
+        android_custom:roundProgressColor="#CD3333"
+        android_custom:roundWidth="10dp"
+        android_custom:textColor="@android:color/holo_blue_bright"
+        android_custom:textIsDisplayable="true"
+        android_custom:textSize="80sp">
+
+    </linuxgg.com.timealarm2.views.RoundProgressBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="pause"/>
+
+        <Button
+            android:id="@+id/set"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_weight="1"
+            android:text="Set"/>
+    </LinearLayout>
+
+</RelativeLayout>

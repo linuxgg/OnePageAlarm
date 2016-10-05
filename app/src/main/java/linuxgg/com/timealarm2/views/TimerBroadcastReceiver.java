@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import linuxgg.com.timealarm2.MainActivity;
 import linuxgg.com.timealarm2.TimerService;
@@ -27,8 +26,6 @@ public class TimerBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(TimerService.TAG)) {
-            int timeLeft = intent.getIntExtra(TimerService.TIMERSERVICE_TIMELEFT, 0);
-            Log.d("", timeLeft + "");
             Message msg = new Message();
             msg.what = MainActivity.PROGRESS_TAG;
             Bundle bd = new Bundle();

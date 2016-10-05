@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case PROGRESS_TAG:
+                    if (countTime == 0) return;
                     int textTime = msg.getData().getInt(TimerService.TIMERSERVICE_TIMELEFT);
-                    int currentProgress = (countTime - textTime );
+                    int currentProgress = (countTime - textTime);
 
                     if (textTime == 0) {
                         resetCountDone();
@@ -112,10 +113,6 @@ public class MainActivity extends AppCompatActivity {
         settings = (Button) findViewById(R.id.set);
         clear = (Button) findViewById(R.id.clear);
 
-        roundProgress.setProgress(0);
-        roundProgress.setMax(MAX);
-
-
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         resetCountDone();
                         countTime = dialog_m_picker.getValue() * 60;
-                        roundProgress.setMax(countTime);
+
 
                         if (settingDialog != null && settingDialog.isShowing()) {
                             settingDialog.dismiss();
@@ -156,8 +153,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (dialog_m_picker.getValue() != 0) {
+                            roundProgress.setMax(countTime);
                             Intent i = new Intent(MainActivity.this
                                     , TimerService.class);
+                            i.putExtra(TimerService.TAG, countTime);
                             startService(i);
                         }
 

@@ -39,8 +39,15 @@ public class TimerService extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        timeLeft = intent.getIntExtra(TAG, 0);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
+
 
         Toast.makeText(this, "MusicService onCreate()", Toast.LENGTH_SHORT).show();
 

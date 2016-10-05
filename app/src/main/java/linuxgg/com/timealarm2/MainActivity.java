@@ -1,40 +1,57 @@
 package linuxgg.com.timealarm2;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 
 import linuxgg.com.timealarm2.views.RoundProgressBar;
+import linuxgg.com.timealarm2.views.TimerBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
     private final int MAX = 60;
 
-    private final int PROGRESS_TAG = 0;
+    private int countTime;
+
+    public static final int PROGRESS_TAG = 0;
     private final int SECOND_PROGRESS_TAG = 1;
+    private AlertDialog settingDialog;
     private ProgressBar timer_progress;
     private RoundProgressBar roundProgress;
-    private Button settings, pause;
+    private TimerBroadcastReceiver timerBroadcastReceiver;
+    private Button settings, clear;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
             switch (msg.what) {
                 case PROGRESS_TAG:
-                    int currentProgress = (roundProgress.getProgress() + 5);
-                    if(currentProgress == MAX){
-                        roundProgress.setProgress(  MAX);
-                        roundProgress.setText(  MAX + "");
-                    }else{
+                    int textTime = msg.getData().getInt(TimerService.TIMERSERVICE_TIMELEFT);
+                    int currentProgress = (countTime - textTime );
 
-                        roundProgress.setProgress(currentProgress % MAX);
-                        roundProgress.setText(currentProgress % MAX + "");
+                    if (textTime == 0) {
+                        resetCountDone();
+                        showTimeoutDialog();
+                    } else {
+
+                        roundProgress.setProgress(currentProgress % countTime);
+                        if (textTime > 60) {
+                            roundProgress.setText((textTime / 60) + ":" + (textTime % 60));
+                        } else {
+                            roundProgress.setText("" + (textTime % 60));
+                        }
                     }
-                    progressGrow();
                     break;
                 case SECOND_PROGRESS_TAG:
                     break;
@@ -45,46 +62,129 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void showTimeoutDialog() {
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Warning!!!")
+                .setMessage("Time out!!!")
+                .setCancelable(false)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        stopService(new Intent(MainActivity.this, TimerService.class));
+                    }
+                })
+                .show();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        timerBroadcastReceiver = new TimerBroadcastReceiver(handler);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(TimerService.TAG);
+        registerReceiver(timerBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timerBroadcastReceiver != null) {
+            unregisterReceiver(timerBroadcastReceiver);
+        }
     }
 
     private void initView() {
 
         timer_progress = (ProgressBar) findViewById(R.id.timer_progress);
         roundProgress = (RoundProgressBar) findViewById(R.id.roundProgress);
+        resetCountDone();
         settings = (Button) findViewById(R.id.set);
-        pause = (Button) findViewById(R.id.pause);
+        clear = (Button) findViewById(R.id.clear);
 
         roundProgress.setProgress(0);
         roundProgress.setMax(MAX);
-        roundProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressGrow();
+
+                View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_layout, null);
+                settingDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Setting time")
+                        .setView(dialogView)
+                        .setCancelable(false)
+                        .show();
+                final NumberPicker dialog_h_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_h_picker);
+                dialog_h_picker.setMaxValue(MAX);
+                dialog_h_picker.setMinValue(0);
+                final NumberPicker dialog_m_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_m_picker);
+                dialog_m_picker.setMaxValue(300);
+                dialog_m_picker.setMinValue(0);
+                Button cancel = (Button) dialogView.findViewById(R.id.dialog_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (settingDialog != null && settingDialog.isShowing()) {
+                            settingDialog.dismiss();
+                            settingDialog = null;
+                        }
+                    }
+                });
+                Button done = (Button) dialogView.findViewById(R.id.dialog_done);
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        resetCountDone();
+                        countTime = dialog_m_picker.getValue() * 60;
+                        roundProgress.setMax(countTime);
+
+                        if (settingDialog != null && settingDialog.isShowing()) {
+                            settingDialog.dismiss();
+                            settingDialog = null;
+                        }
+
+                        if (dialog_m_picker.getValue() != 0) {
+                            Intent i = new Intent(MainActivity.this
+                                    , TimerService.class);
+                            startService(i);
+                        }
+
+
+                    }
+                });
+
             }
         });
 
-        pause.setOnClickListener(new View.OnClickListener() {
+        clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.removeMessages(PROGRESS_TAG);
+                resetCountDone();
+                Intent i = new Intent(MainActivity.this, TimerService.class);
+                stopService(i);
             }
         });
 
     }
 
-    private void progressGrow() {
-        handler.sendEmptyMessageDelayed(PROGRESS_TAG, 1000);
+    private void resetCountDone() {
+
+        handler.removeMessages(PROGRESS_TAG);
+        roundProgress.setProgress(0);
+        roundProgress.setText("" + 0);
     }
+
+
 }

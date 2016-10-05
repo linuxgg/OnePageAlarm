@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                        stopService(new Intent(MainActivity.this, TimerService.class));
+                        resetCountDone();
                     }
                 })
                 .show();
@@ -171,15 +170,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resetCountDone();
-                Intent i = new Intent(MainActivity.this, TimerService.class);
-                stopService(i);
+
             }
         });
 
     }
 
     private void resetCountDone() {
-
+        Intent i = new Intent(MainActivity.this, TimerService.class);
+        stopService(i);
         handler.removeMessages(PROGRESS_TAG);
         roundProgress.setProgress(0);
         roundProgress.setText("" + 0);

@@ -19,14 +19,14 @@
         <NumberPicker
             android:id="@+id/dialog_h_picker"
             android:layout_width="100dp"
-            android:visibility="gone"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp"
+            android:visibility="gone"/>
 
         <TextView
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour"/>
+            android:text="Hour"
+            android:visibility="gone"/>
 
         <NumberPicker
             android:id="@+id/dialog_m_picker"
@@ -43,12 +43,12 @@
 
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/time_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:background="@drawable/red_point"/>
+        android:background="@drawable/record_background"/>
 
     <LinearLayout
         android:layout_width="match_parent"

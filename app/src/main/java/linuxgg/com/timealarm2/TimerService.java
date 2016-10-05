@@ -2,6 +2,7 @@ package linuxgg.com.timealarm2;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -20,14 +21,14 @@ import java.util.TimerTask;
 public class TimerService extends Service {
     public static final String TAG = TimerService.class.getSimpleName();
     public static final String TIMERSERVICE_TIMELEFT = "TIMERSERVICE_TIMELEFT";
-    private int timeLeft = 6;
+    private int timeLeft = 0;
     Timer t;
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            onDestroy();
+            mp.start();
         }
     };
 
@@ -66,13 +67,21 @@ public class TimerService extends Service {
                 }
             }
         }, 0, 1000);
+        try {
+            mp = MediaPlayer.create(this, R.raw.bongo);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    MediaPlayer mp = new MediaPlayer();
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         t.cancel();
+        mp.release();
         Toast.makeText(this, "MusicService onDestroy()", Toast.LENGTH_SHORT).show();
     }
 

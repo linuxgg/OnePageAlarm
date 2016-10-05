@@ -19,8 +19,6 @@ import linuxgg.com.timealarm2.views.TimerBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int MAX = 60;
-
     private int countTime;
 
     public static final int PROGRESS_TAG = 0;
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     int currentProgress = (countTime - textTime);
 
                     if (textTime == 0) {
-                        resetCountDone();
+                        resetCountDone(false);
                         showTimeoutDialog();
                     } else {
 
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        resetCountDone();
+                        resetCountDone(true);
                     }
                 })
                 .show();
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         timer_progress = (ProgressBar) findViewById(R.id.timer_progress);
         roundProgress = (RoundProgressBar) findViewById(R.id.roundProgress);
-        resetCountDone();
+        resetCountDone(true);
         settings = (Button) findViewById(R.id.set);
         clear = (Button) findViewById(R.id.clear);
 
@@ -123,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .show();
                 final NumberPicker dialog_h_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_h_picker);
-                dialog_h_picker.setMaxValue(MAX);
+                dialog_h_picker.setMaxValue(100);
                 dialog_h_picker.setMinValue(0);
                 final NumberPicker dialog_m_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_m_picker);
                 dialog_m_picker.setMaxValue(300);
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        resetCountDone();
+                        resetCountDone(false);
                         countTime = dialog_m_picker.getValue() * 60;
 
 
@@ -169,16 +167,19 @@ public class MainActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetCountDone();
+                resetCountDone(true);
 
             }
         });
 
     }
 
-    private void resetCountDone() {
-        Intent i = new Intent(MainActivity.this, TimerService.class);
-        stopService(i);
+    private void resetCountDone(boolean needStopService) {
+        if (needStopService) {
+            Intent i = new Intent(MainActivity.this, TimerService.class);
+            stopService(i);
+        }
+
         handler.removeMessages(PROGRESS_TAG);
         roundProgress.setProgress(0);
         roundProgress.setText("" + 0);

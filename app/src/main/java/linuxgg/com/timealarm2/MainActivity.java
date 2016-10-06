@@ -97,9 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (timerBroadcastReceiver != null) {
-            unregisterReceiver(timerBroadcastReceiver);
-        }
+
     }
 
     private void initView() {
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         resetCountDone(false);
-                        countTime = dialog_m_picker.getValue() * 60;
+                        countTime = dialog_m_picker.getValue() * 10;
 
 
                         if (settingDialog != null && settingDialog.isShowing()) {
@@ -179,11 +177,21 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, TimerService.class);
             stopService(i);
         }
-
         handler.removeMessages(PROGRESS_TAG);
         roundProgress.setProgress(0);
         roundProgress.setText("" + 0);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timerBroadcastReceiver != null) {
+            unregisterReceiver(timerBroadcastReceiver);
+        }
+    }
 }

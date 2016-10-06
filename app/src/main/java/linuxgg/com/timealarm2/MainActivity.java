@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog_h_picker.setMaxValue(100);
                 dialog_h_picker.setMinValue(1);
                 final NumberPicker dialog_m_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_m_picker);
-                dialog_m_picker.setMaxValue(300);
+                dialog_m_picker.setMaxValue(2400);
                 dialog_m_picker.setMinValue(1);
                 final Button cancel = (Button) dialogView.findViewById(R.id.dialog_cancel);
                 final Button done = (Button) dialogView.findViewById(R.id.dialog_done);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                             mediaRecorder.release();
                         }
 
-                        resetCountDone(false);
+                        resetCountDone(true);
                         countTime = dialog_m_picker.getValue() * DEFAULT_TIME;
 
 
@@ -240,6 +240,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Log.d("", "start record");
                         try {
+
+                            resetCountDone(true);
 
                             recordStartButton.setVisibility(View.GONE);
                             recordStartButton.setEnabled(false);

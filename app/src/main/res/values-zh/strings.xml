@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">闹钟</string>
+    <string name="clear_warning">需要清除闹钟?</string>
+    <string name="no_record">没有记录</string>
+    <string name="playing">播放中</string>
+    <string name="replay">播放</string>
+    <string name="set_time">设置时间</string>
+    <string name="string_cancel">取消</string>
+    <string name="string_ok">确定</string>
+    <string name="time_out">到时间了!!!</string>
+    <string name="warning">警告</string>
+    <string name="clear">清除</string>
+    <string name="done">完成</string>
+    <string name="hour">小时</string>
+    <string name="min">分钟</string>
+    <string name="set">设置</string>
+    <string name="voice_alarm">录音小闹钟</string>
+</resources>

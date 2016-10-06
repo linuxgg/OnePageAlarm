@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Voice Alarm"/>
+        android:text="@string/voice_alarm"/>
 
     <ProgressBar
         android:id="@+id/timer_progress"
@@ -61,7 +61,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="clear"/>
+            android:text="@string/clear"/>
 
         <Button
             android:id="@+id/set"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:layout_weight="1"
-            android:text="Set"/>
+            android:text="@string/set"/>
     </LinearLayout>
 
 </RelativeLayout>

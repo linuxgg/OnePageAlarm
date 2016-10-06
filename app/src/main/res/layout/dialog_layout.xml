@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hour"
+            android:text="@string/hour"
             android:visibility="gone"/>
 
         <NumberPicker
@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Min"/>
+            android:text="@string/min"/>
 
     </LinearLayout>
 
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel"/>
+            android:text="@string/string_cancel"/>
 
         <Button
             android:id="@+id/dialog_replay"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_weight="1"
-            android:text="Replay"/>
+            android:text="@string/replay"/>
 
         <Button
             android:id="@+id/dialog_done"
@@ -101,6 +101,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_weight="1"
-            android:text="Done"/>
+            android:text="@string/done"/>
     </LinearLayout>
 </RelativeLayout>

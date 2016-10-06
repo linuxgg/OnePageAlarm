@@ -4,4 +4,15 @@
     <string name="clear_warning">Want clear the alarm?</string>
     <string name="string_ok">ok</string>
     <string name="string_cancel">Cancel</string>
+    <string name="time_out">Time out!!!</string>
+    <string name="set_time">Setting time</string>
+    <string name="no_record">No record</string>
+    <string name="playing">Playing</string>
+    <string name="replay">Replay</string>
+    <string name="voice_alarm">Voice Alarm</string>
+    <string name="clear">clear</string>
+    <string name="set">Set</string>
+    <string name="hour">Hour</string>
+    <string name="min">Min</string>
+    <string name="done">Done</string>
 </resources>

@@ -76,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
     private void showTimeoutDialog() {
 
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Warning!!!")
-                .setMessage("Time out!!!")
+                .setTitle(R.string.warning)
+                .setMessage(R.string.time_out)
                 .setCancelable(false)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.string_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         resetCountDone(true);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
                 View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_layout, null);
                 settingDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Setting time")
+                        .setTitle(R.string.set_time)
                         .setView(dialogView)
                         .setCancelable(false)
                         .show();
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("", "play button clicked " + mFileName);
                         if (TextUtils.isEmpty(mFileName)) {
-                            Toast.makeText(MainActivity.this, "No record", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.no_record, Toast.LENGTH_SHORT).show();
                         } else {
                             final MediaPlayer mp = new MediaPlayer();
                             try {
@@ -208,13 +208,13 @@ public class MainActivity extends AppCompatActivity {
                                 mp.setDataSource(mFileName);
                                 mp.prepare();
                                 mp.start();
-                                replay.setText("Playing");
+                                replay.setText(R.string.playing);
                                 mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                     @Override
                                     public void onCompletion(MediaPlayer mediaPlayer) {
                                         mp.stop();
                                         mp.release();
-                                        replay.setText("Replay");
+                                        replay.setText(R.string.replay);
 
                                         recordStartButton.setEnabled(true);
                                         recordStopButton.setEnabled(true);

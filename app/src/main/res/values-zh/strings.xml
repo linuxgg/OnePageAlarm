@@ -16,4 +16,5 @@
     <string name="min">分钟</string>
     <string name="set">设置</string>
     <string name="voice_alarm">录音小闹钟</string>
+    <string name="alarm_cancel">闹钟取消</string>
 </resources>

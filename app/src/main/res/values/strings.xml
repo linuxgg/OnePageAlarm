@@ -15,4 +15,5 @@
     <string name="hour">Hour</string>
     <string name="min">Min</string>
     <string name="done">Done</string>
+    <string name="alarm_cancel">Alarm cancel !.</string>
 </resources>

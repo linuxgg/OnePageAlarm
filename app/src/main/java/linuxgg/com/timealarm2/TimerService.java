@@ -103,7 +103,7 @@ public class TimerService extends Service {
         super.onDestroy();
         t.cancel();
         mp.release();
-        Toast.makeText(this, "MusicService onDestroy()", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.alarm_cancel, Toast.LENGTH_SHORT).show();
     }
 
     @Override

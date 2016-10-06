@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TimeAlarm2</string>
+    <string name="warning">Warning</string>
+    <string name="clear_warning">Want clear the alarm?</string>
+    <string name="string_ok">ok</string>
+    <string name="string_cancel">Cancel</string>
 </resources>

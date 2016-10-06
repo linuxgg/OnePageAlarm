@@ -29,6 +29,7 @@ import linuxgg.com.timealarm2.views.TimerBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int DEFAULT_TIME = 60;
     private int countTime;
 
     public static final int PROGRESS_TAG = 0;
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
                         mediaRecorder.release();
                         resetCountDone(false);
-                        countTime = dialog_m_picker.getValue() * 10;
+                        countTime = dialog_m_picker.getValue() * DEFAULT_TIME;
 
 
                         if (settingDialog != null && settingDialog.isShowing()) {
@@ -293,16 +294,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Warning")
-                        .setMessage("Want clear the alarm?")
+                        .setTitle(R.string.warning)
+                        .setMessage(R.string.clear_warning)
                         .setCancelable(false)
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.string_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 resetCountDone(true);
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.string_cancel, null)
                         .show();
 
 

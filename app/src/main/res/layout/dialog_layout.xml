@@ -28,14 +28,17 @@
             android:text="@string/hour"
             android:visibility="gone"/>
 
-        <NumberPicker
+        <linuxgg.com.timealarm2.views.MyNumberPicker
             android:id="@+id/dialog_m_picker"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
+
             android:layout_height="200dp"
             android:backgroundTint="@android:color/holo_green_dark"/>
 
         <TextView
             android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="60dp"
             android:layout_height="wrap_content"
             android:text="@string/min"/>
 

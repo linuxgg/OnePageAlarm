@@ -1,11 +1,13 @@
 package linuxgg.com.timealarm2;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -79,10 +81,14 @@ public class TimerService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    PowerManager.WakeLock wakeLock = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TimerService.class.getName());
+        wakeLock.acquire();
 
     }
 
@@ -90,6 +96,10 @@ public class TimerService extends Service {
 
     @Override
     public void onDestroy() {
+        if (wakeLock != null) {
+            wakeLock.release();
+            wakeLock = null;
+        }
         super.onDestroy();
         t.cancel();
         mp.release();

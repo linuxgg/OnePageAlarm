@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        if(mediaRecorder!=null){
+                        if (mediaRecorder != null) {
                             mediaRecorder.release();
                         }
 

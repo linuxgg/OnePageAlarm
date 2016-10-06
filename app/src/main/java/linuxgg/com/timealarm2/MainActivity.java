@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -137,7 +136,19 @@ public class MainActivity extends AppCompatActivity {
                 final NumberPicker dialog_m_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_m_picker);
                 dialog_m_picker.setMaxValue(300);
                 dialog_m_picker.setMinValue(0);
-                Button cancel = (Button) dialogView.findViewById(R.id.dialog_cancel);
+                final Button cancel = (Button) dialogView.findViewById(R.id.dialog_cancel);
+                final Button done = (Button) dialogView.findViewById(R.id.dialog_done);
+                final Button replay = (Button) dialogView.findViewById(R.id.dialog_replay);
+                final ImageButton recordStartButton = (ImageButton) dialogView.findViewById(R.id.button_record2);
+                final ImageButton recordStopButton = (ImageButton) dialogView.findViewById(R.id.button_record3);
+
+
+                final File folder = new File(getCacheDir().getAbsolutePath() + RECORD_PATH);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+
+
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -147,10 +158,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                Button done = (Button) dialogView.findViewById(R.id.dialog_done);
+
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        mediaRecorder.release();
                         resetCountDone(false);
                         countTime = dialog_m_picker.getValue() * 10;
 
@@ -165,13 +178,14 @@ public class MainActivity extends AppCompatActivity {
                             Intent i = new Intent(MainActivity.this
                                     , TimerService.class);
                             i.putExtra(TimerService.TAG, countTime);
+                            i.putExtra(TimerService.TIMERSERVICE_RECORD_PATH, mFileName);
                             startService(i);
                         }
 
 
                     }
                 });
-                final Button replay = (Button) dialogView.findViewById(R.id.dialog_replay);
+
                 replay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -182,6 +196,14 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             final MediaPlayer mp = new MediaPlayer();
                             try {
+
+                                recordStartButton.setEnabled(false);
+                                recordStopButton.setEnabled(false);
+                                cancel.setEnabled(false);
+                                replay.setEnabled(false);
+                                done.setEnabled(false);
+
+
                                 mp.setDataSource(mFileName);
                                 mp.prepare();
                                 mp.start();
@@ -192,6 +214,12 @@ public class MainActivity extends AppCompatActivity {
                                         mp.stop();
                                         mp.release();
                                         replay.setText("Replay");
+
+                                        recordStartButton.setEnabled(true);
+                                        recordStopButton.setEnabled(true);
+                                        cancel.setEnabled(true);
+                                        replay.setEnabled(true);
+                                        done.setEnabled(true);
                                     }
                                 });
                             } catch (IOException e) {
@@ -202,29 +230,32 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                ImageButton record = (ImageButton) dialogView.findViewById(R.id.button_record);
-                ImageButton record2 = (ImageButton) dialogView.findViewById(R.id.button_record2);
-                ImageButton record3 = (ImageButton) dialogView.findViewById(R.id.button_record3);
 
-                final MediaRecorder mediaRecorder = new MediaRecorder();
-                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                delRecords();
-
-                final File folder = new File(getCacheDir().getAbsolutePath() + RECORD_PATH);
-                folder.mkdirs();
-
-
-                record2.setOnClickListener(new View.OnClickListener() {
+                recordStartButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.d("", "start record");
                         try {
+
+                            recordStartButton.setVisibility(View.GONE);
+                            recordStartButton.setEnabled(false);
+                            recordStopButton.setVisibility(View.VISIBLE);
+                            recordStopButton.setEnabled(true);
+                            cancel.setEnabled(false);
+                            replay.setEnabled(false);
+                            done.setEnabled(false);
+
+
+                            mediaRecorder = new MediaRecorder();
+                            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
                             mFileName = folder.getAbsolutePath() + "/" + System.currentTimeMillis() + ".3gp";
                             mediaRecorder.setOutputFile(mFileName);
                             mediaRecorder.prepare();
                             mediaRecorder.start();
+
                         } catch (IOException e) {
                             e.printStackTrace();
 
@@ -232,58 +263,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                record3.setOnClickListener(new View.OnClickListener() {
+                recordStopButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.d("", "stop record");
                         try {
                             mediaRecorder.setOnErrorListener(null);
                             mediaRecorder.stop();
-                            mediaRecorder.release();
+
+                            recordStartButton.setVisibility(View.VISIBLE);
+                            recordStartButton.setEnabled(true);
+                            recordStopButton.setVisibility(View.GONE);
+                            recordStopButton.setEnabled(false);
+                            cancel.setEnabled(true);
+                            replay.setEnabled(true);
+                            done.setEnabled(true);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                });
-
-
-                record.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-
-
-                        if (isRecording) return false;
-                        Log.d("", "onTouch clicked");
-                        isRecording = true;
-
-                        mFileName = folder.getAbsolutePath() + "/" + System.currentTimeMillis() + ".3gp";
-                        mediaRecorder.setOutputFile(mFileName);
-                        Log.d("", "onTouch clicked mFileName::" + mFileName);
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_BUTTON_PRESS:
-                            case MotionEvent.ACTION_DOWN:
-                                Log.d("", "start record");
-                                try {
-                                    mediaRecorder.prepare();
-                                    mediaRecorder.start();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-
-                            case MotionEvent.ACTION_BUTTON_RELEASE:
-                                Log.d("", "stop record");
-                                isRecording = false;
-                                mediaRecorder.setOnErrorListener(null);
-                                mediaRecorder.stop();
-                                mediaRecorder.release();
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
-                    }
-
                 });
 
 
@@ -320,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String mFileName;
     private boolean isRecording = false;
+    private MediaRecorder mediaRecorder;
 
     private void resetCountDone(boolean needStopService) {
         if (needStopService) {

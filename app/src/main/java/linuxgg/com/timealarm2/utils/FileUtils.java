@@ -20,7 +20,7 @@ public class FileUtils {
 
     private static void deleteFile(File file) {
         try {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && file.listFiles().length > 0) {
                 deleteFilesThread(file);
             } else {
                 file.deleteOnExit();

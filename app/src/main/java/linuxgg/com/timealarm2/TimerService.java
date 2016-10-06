@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,7 +22,9 @@ import java.util.TimerTask;
 public class TimerService extends Service {
     public static final String TAG = TimerService.class.getSimpleName();
     public static final String TIMERSERVICE_TIMELEFT = "TIMERSERVICE_TIMELEFT";
+    public static final String TIMERSERVICE_RECORD_PATH = "TIMERSERVICE_RECORD_PATH";
     private int timeLeft = 0;
+    private String filePath;
     Timer t;
 
     private Handler handler = new Handler() {
@@ -42,6 +45,7 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         timeLeft = intent.getIntExtra(TAG, 0);
+        filePath = intent.getStringExtra(TIMERSERVICE_RECORD_PATH);
 
 
         t = new Timer("timer");
@@ -60,7 +64,13 @@ public class TimerService extends Service {
             }
         }, 0, 1000);
         try {
-            mp = MediaPlayer.create(this, R.raw.bongo);
+            if (TextUtils.isEmpty(filePath)) {
+                mp = MediaPlayer.create(this, R.raw.bongo);
+            } else {
+                mp = new MediaPlayer();
+                mp.setDataSource(filePath);
+                mp.prepare();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

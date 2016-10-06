@@ -17,6 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
         android:text="@string/voice_alarm"/>
 
     <ProgressBar
@@ -36,9 +38,8 @@
 
     <linuxgg.com.timealarm2.views.RoundProgressBar
         android:id="@+id/roundProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="30dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android_custom:roundColor="#C6E2FF"
         android_custom:roundProgressColor="#CD3333"
@@ -67,7 +68,7 @@
             android:id="@+id/set"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
+            android:layout_marginLeft="80dp"
             android:layout_weight="1"
             android:text="@string/set"/>
     </LinearLayout>

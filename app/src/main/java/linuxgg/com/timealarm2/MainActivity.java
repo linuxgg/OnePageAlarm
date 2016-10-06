@@ -133,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
                         .show();
                 final NumberPicker dialog_h_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_h_picker);
                 dialog_h_picker.setMaxValue(100);
-                dialog_h_picker.setMinValue(0);
+                dialog_h_picker.setMinValue(1);
                 final NumberPicker dialog_m_picker = (NumberPicker) dialogView.findViewById(R.id.dialog_m_picker);
                 dialog_m_picker.setMaxValue(300);
-                dialog_m_picker.setMinValue(0);
+                dialog_m_picker.setMinValue(1);
                 final Button cancel = (Button) dialogView.findViewById(R.id.dialog_cancel);
                 final Button done = (Button) dialogView.findViewById(R.id.dialog_done);
                 final Button replay = (Button) dialogView.findViewById(R.id.dialog_replay);
@@ -164,7 +164,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        mediaRecorder.release();
+                        if(mediaRecorder!=null){
+                            mediaRecorder.release();
+                        }
+
                         resetCountDone(false);
                         countTime = dialog_m_picker.getValue() * DEFAULT_TIME;
 

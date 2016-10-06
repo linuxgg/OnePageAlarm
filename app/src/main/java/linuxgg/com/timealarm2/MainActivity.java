@@ -165,7 +165,20 @@ public class MainActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetCountDone(true);
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Warning")
+                        .setMessage("Want clear the alarm?")
+                        .setCancelable(false)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resetCountDone(true);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+
 
             }
         });

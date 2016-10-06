@@ -43,12 +43,29 @@
 
 
     <ImageButton
+        android:id="@+id/button_record"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@+id/time_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:background="@drawable/record_background"/>
+ <ImageButton
+        android:id="@+id/button_record2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/time_picker"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/holo_blue_dark"/>
+    <ImageButton
+        android:id="@+id/button_record3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/time_picker"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/holo_red_light"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,6 +80,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel"/>
+
+        <Button
+            android:id="@+id/dialog_replay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_weight="1"
+            android:text="Replay"/>
 
         <Button
             android:id="@+id/dialog_done"
